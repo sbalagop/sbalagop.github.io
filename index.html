@@ -1,44 +1,66 @@
-<!--  ----------------------------------------------------------------------  -->
-<!--  NOTE: Please add the following <META> element to your page <HEAD>.      -->
-<!--  If necessary, please modify the charset parameter to specify the        -->
-<!--  character set of your HTML page.                                        -->
-<!--  ----------------------------------------------------------------------  -->
+<html>
+ <body>
+  <style type='text/css'>
+	.embeddedServiceHelpButton .helpButton .uiButton {
+		background-color: #005290;
+		font-family: "Arial", sans-serif;
+	}
+	.embeddedServiceHelpButton .helpButton .uiButton:focus {
+		outline: 1px solid #005290;
+	}
+</style>
 
-<META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
-<script src="https://www.google.com/recaptcha/api.js"></script>
-<script>
- function timestamp() { var response = document.getElementById("g-recaptcha-response"); if (response == null || response.value.trim() == "") {var elems = JSON.parse(document.getElementsByName("captcha_settings")[0].value);elems["ts"] = JSON.stringify(new Date().getTime());document.getElementsByName("captcha_settings")[0].value = JSON.stringify(elems); } } setInterval(timestamp, 500); 
+<script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+<script type='text/javascript'>
+	var initESW = function(gslbBaseURL) {
+		embedded_svc.settings.displayHelpButton = true; //Or false
+		embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+
+		//embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+		//embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+
+		//embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+		//embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+		// Settings for Chat
+		//embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+			// Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+			// Returns a valid button ID.
+		//};
+		//embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+		//embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+		//embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+
+		embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+		embedded_svc.settings.entryFeature = 'LiveAgent';
+
+		embedded_svc.init(
+			'https://dsb000003tdgc2ai.test1.my.pc-rnd.salesforce.com',
+			'https://dsb000003tdgc2ai.test1.my.pc-rnd.salesforce-sites.com/liveAgentSetupFlow',
+			gslbBaseURL,
+			'00DSB000003tdGc',
+			'ChatWithCustomers',
+			{
+				baseLiveAgentContentURL: 'https://c.la13-test1-uswest2-core4.pc-aws.salesforceliveagent.com/content',
+				deploymentId: '572SB000001uIsv',
+				buttonId: '573SB00000116Ar',
+				baseLiveAgentURL: 'https://d.la13-test1-uswest2-core4.pc-aws.salesforceliveagent.com/chat',
+				eswLiveAgentDevName: 'ChatWithCustomers',
+				isOfflineSupportEnabled: true
+			}
+		);
+	};
+
+	if (!window.embedded_svc) {
+		var s = document.createElement('script');
+		s.setAttribute('src', 'https://dsb000003tdgc2ai.test1.my.pc-rnd.salesforce.com/embeddedservice/5.0/esw.min.js');
+		s.onload = function() {
+			initESW(null);
+		};
+		document.body.appendChild(s);
+	} else {
+		initESW('https://service.force.com');
+	}
 </script>
-
-<!--  ----------------------------------------------------------------------  -->
-<!--  NOTE: Please add the following <FORM> element to your page.             -->
-<!--  ----------------------------------------------------------------------  -->
-
-<form action="https://webto.stmfa.stm.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8" method="POST">
-
-<input type=hidden name='captcha_settings' value='{"keyname":"v2_git_pages","fallback":"true","orgId":"00DRM000000FElc","ts":""}'>
-<input type=hidden name="orgid" value="00DRM000000FElc">
-<input type=hidden name="retURL" value="https://sbalagop.github.io/">
-
-<!--  ----------------------------------------------------------------------  -->
-<!--  NOTE: These fields are optional debugging elements. Please uncomment    -->
-<!--  these lines if you wish to test in debug mode.                          -->
-<!--  <input type="hidden" name="debug" value=1>                              -->
-<!--  <input type="hidden" name="debugEmail"                                  -->
-<!--  value="sbalagopalan@salesforce.com">                                    -->
-<!--  ----------------------------------------------------------------------  -->
-
-<label for="name">Contact Name</label><input  id="name" maxlength="80" name="name" size="20" type="text" /><br>
-
-<label for="email">Email</label><input  id="email" maxlength="80" name="email" size="20" type="text" /><br>
-
-<label for="phone">Phone</label><input  id="phone" maxlength="40" name="phone" size="20" type="text" /><br>
-
-<label for="subject">Subject</label><input  id="subject" maxlength="80" name="subject" size="20" type="text" /><br>
-
-<label for="description">Description</label><textarea name="description"></textarea><br>
-
-<div class="g-recaptcha" data-sitekey="6LehF8AUAAAAAGXc8qNT00sj4rdEiruPPih8tpc3"></div><br>
-<input type="submit" name="submit">
-
-</form>
+ </body>
+</html>
